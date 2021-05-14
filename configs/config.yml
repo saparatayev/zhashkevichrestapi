@@ -1,1 +1,8 @@
 port: "8081"
+
+db:
+  username: "root"
+  host: "localhost"
+  port: "3306"
+  dbname: "zhashk_rest_api"
+  sslmode: "disable"
