@@ -41,13 +41,13 @@ func main() {
 	handlers := handler.NewHandler(services)
 
 	srv := new(zhashkRestApi.Server)
-	if err := srv.Run(viper.GetString("8080"), handlers.InitRoutes()); err != nil {
+	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }
 
 func InitConfig() error {
 	viper.AddConfigPath("configs")
-	viper.SetConfigName("configs")
+	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }

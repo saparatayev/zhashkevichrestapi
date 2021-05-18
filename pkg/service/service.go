@@ -1,8 +1,12 @@
 package service
 
-import "zhashkRestApi/pkg/repository"
+import (
+	"zhashkRestApi"
+	"zhashkRestApi/pkg/repository"
+)
 
 type Authorization interface {
+	CreateUser(user zhashkRestApi.User) (int, error)
 }
 
 type TodoList interface {
@@ -18,5 +22,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
