@@ -32,3 +32,11 @@ func (r *AuthMysql) CreateUser(user zhashkRestApi.User) (int, error) {
 
 	return id, nil
 }
+
+func (r *AuthMysql) GetUser(username, password string) (zhashkRestApi.User, error) {
+	var user zhashkRestApi.User
+	query := fmt.Sprintf(`select id from %s where username=? and password_hash=?`, usersTable)
+	err := r.db.Get(&user, query, username, password)
+
+	return user, err
+}

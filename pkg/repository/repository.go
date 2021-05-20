@@ -8,6 +8,7 @@ import (
 
 type Authorization interface {
 	CreateUser(user zhashkRestApi.User) (int, error)
+	GetUser(username, password string) (zhashkRestApi.User, error)
 }
 
 type TodoList interface {
