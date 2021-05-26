@@ -28,6 +28,9 @@ func (r *AuthMysql) CreateUser(user zhashkRestApi.User) (int, error) {
 	}
 
 	idInt64, err = result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
 	id := int(idInt64)
 
 	return id, nil
