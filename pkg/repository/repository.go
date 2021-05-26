@@ -12,6 +12,7 @@ type Authorization interface {
 }
 
 type TodoList interface {
+	Create(userId int, list zhashkRestApi.TodoList) (int, error)
 }
 
 type TodoItem interface {
@@ -26,5 +27,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: newAuthMysql(db),
+		TodoList:      NewTodoListMysql(db),
 	}
 }
