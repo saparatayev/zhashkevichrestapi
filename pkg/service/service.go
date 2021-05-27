@@ -14,6 +14,7 @@ type Authorization interface {
 type TodoList interface {
 	Create(userId int, list zhashkRestApi.TodoList) (int, error)
 	GetAll(userId int) ([]zhashkRestApi.TodoList, error)
+	GetById(userId, listId int) (zhashkRestApi.TodoList, error)
 }
 
 type TodoItem interface {

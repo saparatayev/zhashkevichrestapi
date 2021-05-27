@@ -61,3 +61,15 @@ func (r *TodoListMysql) GetAll(userId int) ([]zhashkRestApi.TodoList, error) {
 
 	return lists, err
 }
+
+func (r *TodoListMysql) GetById(userId, listId int) (zhashkRestApi.TodoList, error) {
+	var list zhashkRestApi.TodoList
+
+	query := fmt.Sprintf(`
+		SELECT tl.id, tl.title, tl.description FROM %s AS tl 
+		INNER JOIN %s as ul ON tl.id = ul.list_id WHERE ul.user_id = ? and ul.list_id = ?
+	`, todoListsTable, usersListsTable)
+	err := r.db.Get(&list, query, userId, listId)
+
+	return list, err
+}
