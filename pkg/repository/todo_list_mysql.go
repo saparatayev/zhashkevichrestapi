@@ -73,3 +73,15 @@ func (r *TodoListMysql) GetById(userId, listId int) (zhashkRestApi.TodoList, err
 
 	return list, err
 }
+func (r *TodoListMysql) Delete(userId, listId int) error {
+	query := fmt.Sprintf(`
+		DELETE tl, ul FROM %s tl, %s ul
+		WHERE tl.id = ul.list_id 
+		AND ul.user_id = ?
+		AND ul.list_id = ? 
+	`, todoListsTable, usersListsTable)
+
+	_, err := r.db.Exec(query, userId, listId)
+
+	return err
+}

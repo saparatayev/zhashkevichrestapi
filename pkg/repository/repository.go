@@ -15,6 +15,7 @@ type TodoList interface {
 	Create(userId int, list zhashkRestApi.TodoList) (int, error)
 	GetAll(userId int) ([]zhashkRestApi.TodoList, error)
 	GetById(userId, listId int) (zhashkRestApi.TodoList, error)
+	Delete(userId, listId int) error
 }
 
 type TodoItem interface {
