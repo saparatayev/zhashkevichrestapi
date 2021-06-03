@@ -2,9 +2,11 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 	"zhashkRestApi"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type TodoListMysql struct {
@@ -73,6 +75,7 @@ func (r *TodoListMysql) GetById(userId, listId int) (zhashkRestApi.TodoList, err
 
 	return list, err
 }
+
 func (r *TodoListMysql) Delete(userId, listId int) error {
 	query := fmt.Sprintf(`
 		DELETE tl, ul FROM %s tl, %s ul
@@ -82,6 +85,41 @@ func (r *TodoListMysql) Delete(userId, listId int) error {
 	`, todoListsTable, usersListsTable)
 
 	_, err := r.db.Exec(query, userId, listId)
+
+	return err
+}
+
+func (r *TodoListMysql) Update(userId, listId int, input zhashkRestApi.UpdateListInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+
+	if input.Title != nil {
+		setValues = append(setValues, "title = ?")
+		args = append(args, *input.Title)
+	}
+
+	if input.Description != nil {
+		setValues = append(setValues, "description = ?")
+		args = append(args, *input.Description)
+	}
+
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf(`
+		update %s tl, %s ul
+		set %s
+		where
+		tl.id = ul.list_id
+		and ul.list_id = ?
+		and ul.user_id = ? 
+	`, todoListsTable, usersListsTable, setQuery)
+
+	args = append(args, listId, userId)
+
+	logrus.Debugf("updateQuery: %s", query)
+	logrus.Debugf("args: %s", args)
+
+	_, err := r.db.Exec(query, args...)
 
 	return err
 }
