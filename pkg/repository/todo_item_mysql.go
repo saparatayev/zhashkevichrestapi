@@ -65,3 +65,18 @@ func (r *TodoItemMysql) GetAll(userId, listId int) ([]zhashkRestApi.TodoItem, er
 
 	return items, nil
 }
+
+func (r *TodoItemMysql) GetById(userId, itemId int) (zhashkRestApi.TodoItem, error) {
+	var item zhashkRestApi.TodoItem
+
+	query := fmt.Sprintf(`
+		select ti.id, ti.title, ti.description, ti.done from %s as ti inner join %s as li on li.item_id = ti.id
+		inner join %s as ul on ul.list_id = li.list_id where ti.id = ? and ul.user_id = ?
+	`, todoItemsTable, listsItemsTable, usersListsTable)
+
+	if err := r.db.Get(&item, query, itemId, userId); err != nil {
+		return item, err
+	}
+
+	return item, nil
+}

@@ -30,3 +30,7 @@ func (s *TodoItemService) Create(userId, listId int, item zhashkRestApi.TodoItem
 func (s *TodoItemService) GetAll(userId, listId int) ([]zhashkRestApi.TodoItem, error) {
 	return s.repo.GetAll(userId, listId)
 }
+
+func (s *TodoItemService) GetById(userId, itemId int) (zhashkRestApi.TodoItem, error) {
+	return s.repo.GetById(userId, itemId)
+}

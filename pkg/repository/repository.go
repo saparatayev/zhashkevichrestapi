@@ -22,6 +22,7 @@ type TodoList interface {
 type TodoItem interface {
 	Create(listId int, item zhashkRestApi.TodoItem) (int, error)
 	GetAll(userId, listId int) ([]zhashkRestApi.TodoItem, error)
+	GetById(userId, itemId int) (zhashkRestApi.TodoItem, error)
 }
 
 type Repository struct {
