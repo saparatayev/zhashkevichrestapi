@@ -80,3 +80,17 @@ func (r *TodoItemMysql) GetById(userId, itemId int) (zhashkRestApi.TodoItem, err
 
 	return item, nil
 }
+
+func (r *TodoItemMysql) Delete(userId, itemId int) error {
+	query := fmt.Sprintf(`
+		DELETE ti, li FROM %s ti 
+		LEFT JOIN %s li ON ti.id = li.item_id 
+		LEFT JOIN %s ul on li.list_id = ul.list_id 
+		WHERE ul.user_id = ? 
+		AND ti.id = ?
+	`, todoItemsTable, listsItemsTable, usersListsTable)
+
+	_, err := r.db.Exec(query, userId, itemId)
+
+	return err
+}

@@ -34,3 +34,7 @@ func (s *TodoItemService) GetAll(userId, listId int) ([]zhashkRestApi.TodoItem, 
 func (s *TodoItemService) GetById(userId, itemId int) (zhashkRestApi.TodoItem, error) {
 	return s.repo.GetById(userId, itemId)
 }
+
+func (s *TodoItemService) Delete(userId, itemId int) error {
+	return s.repo.Delete(userId, itemId)
+}
