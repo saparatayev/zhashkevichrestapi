@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 	"zhashkRestApi"
 
 	"github.com/jmoiron/sqlx"
@@ -91,6 +92,48 @@ func (r *TodoItemMysql) Delete(userId, itemId int) error {
 	`, todoItemsTable, listsItemsTable, usersListsTable)
 
 	_, err := r.db.Exec(query, userId, itemId)
+
+	return err
+}
+
+func (r *TodoItemMysql) Update(userId, itemId int, input zhashkRestApi.UpdateItemInput) error {
+	setValues := make([]string, 0)
+	args := make([]interface{}, 0)
+
+	if input.Title != nil {
+		setValues = append(setValues, "title = ?")
+		args = append(args, *input.Title)
+	}
+
+	if input.Description != nil {
+		setValues = append(setValues, "description = ?")
+		args = append(args, *input.Description)
+	}
+
+	if input.Done != nil {
+		setValues = append(setValues, "done = ?")
+		args = append(args, *input.Done)
+	}
+
+	setQuery := strings.Join(setValues, ", ")
+
+	query := fmt.Sprintf(`
+		update %s ti, %s li, %s ul
+		set %s
+		where
+		ti.id = li.item_id
+		and li.list_id = ul.list_id
+		and ul.user_id = ? 
+		and ti.id = ?
+	`, todoItemsTable, listsItemsTable, usersListsTable, setQuery)
+
+	// list_id: 3 список programms
+	// item_id: 8 title: learn golang decr: rest api golang
+	// user_id: 2 Maksim
+
+	args = append(args, userId, itemId)
+
+	_, err := r.db.Exec(query, args...)
 
 	return err
 }

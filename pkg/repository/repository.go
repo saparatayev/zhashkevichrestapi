@@ -24,6 +24,7 @@ type TodoItem interface {
 	GetAll(userId, listId int) ([]zhashkRestApi.TodoItem, error)
 	GetById(userId, itemId int) (zhashkRestApi.TodoItem, error)
 	Delete(userId, itemId int) error
+	Update(userId, itemId int, input zhashkRestApi.UpdateItemInput) error
 }
 
 type Repository struct {
