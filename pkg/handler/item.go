@@ -8,6 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Create item in todo list
+// @Security ApiKeyAuth
+// @Tags items
+// @Description create todo item
+// @ID create-item
+// @Accept  json
+// @Produce  json
+// @Param input body zhashkRestApi.TodoItem true "Item info"
+// @Param id path int true "List ID"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id}/items [post]
 func (h *Handler) createItem(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -37,6 +51,19 @@ func (h *Handler) createItem(c *gin.Context) {
 	})
 }
 
+// @Summary Get all items
+// @Security ApiKeyAuth
+// @Tags items
+// @Description get all items of the list
+// @ID get-all-items
+// @Accept  json
+// @Produce  json
+// @Param id path int true "List ID"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/{id}/items [get]
 func (h *Handler) getAllItems(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -58,6 +85,19 @@ func (h *Handler) getAllItems(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
+// @Summary Get item by id
+// @Security ApiKeyAuth
+// @Tags items
+// @Description get item by id
+// @ID get-item-by-id
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Item ID"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/{id} [get]
 func (h *Handler) getItemById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -79,6 +119,20 @@ func (h *Handler) getItemById(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+// @Summary Update item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description update
+// @ID update-item
+// @Accept  json
+// @Produce  json
+// @Param input body zhashkRestApi.UpdateItemInput true "Item info"
+// @Param id path int true "Item ID"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/{id} [put]
 func (h *Handler) updateItem(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
@@ -107,6 +161,19 @@ func (h *Handler) updateItem(c *gin.Context) {
 	})
 }
 
+// @Summary Delete item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description delete item
+// @ID delete-item
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Item ID"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/{id} [delete]
 func (h *Handler) deleteItem(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
